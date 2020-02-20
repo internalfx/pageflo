@@ -1,0 +1,9 @@
+.nuxt
+node_modules
+npm-debug.log
+logs
+fileStore
+cache
+config/env/*
+deploy.sh
+private
