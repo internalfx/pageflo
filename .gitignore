@@ -4,6 +4,7 @@ npm-debug.log
 logs
 fileStore
 cache
-config/env/*
+config/env/dev.js
+config/env/prod.js
 deploy.sh
 private
