@@ -27,7 +27,7 @@ export const mutations = {
 export const actions = {
   newAccessKey: async function ({ state, rootState, commit, dispatch, getters, rootGetters }) {
     const newObj = {
-      publication_key: rootState.publication_key,
+      publication_key: rootState.route.params.publication_key,
       title: null,
       createdAt: null,
       updatedAt: null
