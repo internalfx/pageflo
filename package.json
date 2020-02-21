@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "main": "app.js",
   "private": true,
+  "homepage": "https://github.com/internalfx/pageflo",
+  "author": "InternalFX inc.",
+  "license": "Apache-2.0",
   "dependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-transform-modules-commonjs": "^7.8.0",
