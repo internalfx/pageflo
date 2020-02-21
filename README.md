@@ -52,3 +52,18 @@ nano config.js
 ```
 nvm run app.js --build
 ```
+
+## Poorly Made demonstration video!
+
+[Watch Now!](https://pageflo2.aam.site/api/client/file/download/1582317980692X1vcs7xx9)
+
+## Screenshots
+
+#### Content Editor
+![Content Editor](https://github.com/internalfx/pageflo/raw/master/static/contentEditor.png)
+
+#### Files
+![Files](https://github.com/internalfx/pageflo/raw/master/static/files.png)
+
+#### Type Editor
+![Type Editor](https://github.com/internalfx/pageflo/raw/master/static/typeEditor.png)
