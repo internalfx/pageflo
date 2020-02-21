@@ -6,7 +6,9 @@ module.exports = {
   port: 8000,
   arango: {
     url: 'http://localhost:8529',
-    database: 'pageflo'
+    database: 'pageflo',
+    username: null, // Needed if auth is configured
+    password: null // Needed if auth is configured
   },
   arangoFS: {
     path: path.join(__dirname, 'fileStore')
