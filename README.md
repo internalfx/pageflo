@@ -13,6 +13,8 @@ PageFlo is an open source headless CMS that gives you the flexibility to host al
 
 ### Run a dev server in minutes
 
+> note: It is assumed you are using nvm.
+
 1. Get the code.
 
 ```
@@ -22,10 +24,10 @@ git clone https://github.com/internalfx/pageflo.git
 2. Get dependencies
 
 ```
-yarn
+nvm exec yarn
 ```
 
-3. Create config file
+3. Copy example config file
 
 ```
 cp example-config.js config.js
@@ -35,4 +37,10 @@ cp example-config.js config.js
 
 ```
 nano config.js
+```
+
+5. start your dev server!
+
+```
+nvm run app.js --build
 ```
