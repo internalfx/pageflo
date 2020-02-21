@@ -6,16 +6,20 @@ require('@babel/register')({
   ]
 })
 
+require('./lib/cycle.js')
 const substruct = require('@internalfx/substruct')
 const { ApolloServer, AuthenticationError, UserInputError } = require('apollo-server-koa')
 const { typeDefs, resolvers } = require('./graphql/index.js')
-require('./lib/cycle.js')
-
+const path = require('path')
 const numeral = require('numeral')
+
+const configPath = path.join(process.cwd(), 'config.js')
+const userConfig = require(configPath)
 
 substruct.configure({
   runDir: process.cwd(),
-  appDir: __dirname
+  appDir: __dirname,
+  ...userConfig
 })
 
 const main = async function () {

@@ -8,3 +8,4 @@ config/env/dev.js
 config/env/prod.js
 deploy.sh
 private
+config.js
