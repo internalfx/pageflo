@@ -5,16 +5,19 @@ import { mapFields } from 'vuex-map-fields'
 import { mapState } from 'vuex'
 
 import fieldTypes from '../../../../lib/fieldTypes.js'
+import filePreview from '../../filePreview.vue'
 
 export default {
   data: function () {
     return {
+      file: null
     }
   },
   props: {
     path: String
   },
   components: {
+    filePreview
   },
   computed: {
     ...mapState('editors/contentType', {
@@ -44,20 +47,21 @@ export default {
 </script>
 
 <template>
-  <div @click.stop="selectedFieldId = field.id" class="field-wrapper mb-4">
-    <div class="d-flex align-center">
-      <div class="mr-3"><v-icon :icon="fieldType.icon" fixed-width>$generic</v-icon></div>
-      <div class="d-flex">
-        <div class="d-flex justify-center align-center" style="max-width: 300px; max-height: 150px;">
-          <!-- <filePreview :file="file" :config="{ height: 150, background: 'fff', format: 'jpg' }" /> -->
+  <div @click.stop="selectedFieldId = field.id" class="field-wrapper">
+    <v-card class="mb-3" outlined>
+      <v-card-title>{{field.label}}</v-card-title>
+      <div class="d-flex align-center">
+        <div class="d-flex justify-center align-center" style="max-width: 300px; max-height: 100px;">
+          <filePreview :file="file" :config="{ height: 100, background: 'fff', format: 'jpg' }" />
         </div>
+        <div>No File Selected</div>
         <div class="pa-4">
-          <v-btn color="primary" outlined rounded>
-            <v-icon>$search</v-icon> Search Files
+          <v-btn color="primary" small>
+            <v-icon left>$search</v-icon> Choose File
           </v-btn>
         </div>
       </div>
-    </div>
+    </v-card>
     <div class="cover-area"></div>
   </div>
 </template>
