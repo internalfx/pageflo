@@ -64,12 +64,12 @@ module.exports = async function (config) {
       // output[field.slug] = await resolveField(field, entry.content, spec)
       const result = await resolveField(field, entry.content, spec)
 
-      if (_.isPlainObject(result)) {
-        for (const [key, val] of Object.entries(result)) {
-          output[key] = val
-        }
-      } else {
-        output[field.slug] = result
+      if (!_.isPlainObject(result)) {
+        throw new Error('Resolve result must be an object!')
+      }
+
+      for (const [key, val] of Object.entries(result)) {
+        output[key] = val
       }
     })
 
@@ -87,71 +87,78 @@ module.exports = async function (config) {
       if (_.isPlainObject(input[field.slug])) {
         const data = input[field.slug]
         console.time('renderMobileDoc')
-        output = renderMobileDoc(data, { ...field.options.imageSize })
+        output = {
+          [field.slug]: renderMobileDoc(data, { ...field.options.imageSize })
+        }
         console.timeEnd('renderMobileDoc')
       } else {
-        output = input[field.slug] || null
+        output = { [field.slug]: null }
       }
     } else if (field.type === 'SelectField') {
       if (field.options.selectMode === 'multiple') {
         const val = input[field.slug]
 
         if (_.isArray(val)) {
-          output = val
+          output = { [field.slug]: val }
         } else if (_.isString(val)) {
-          output = [val]
+          output = { [field.slug]: [val] }
         } else {
-          output = []
+          output = { [field.slug]: [] }
         }
       } else {
         const val = input[field.slug]
 
         if (_.isString(val)) {
-          output = val
+          output = { [field.slug]: val }
         } else if (_.isArray(val)) {
-          output = _.first(val)
+          output = { [field.slug]: _.first(val) }
         } else {
-          output = null
+          output = { [field.slug]: null }
         }
       }
     } else if (field.type === 'GroupLayout') {
       if (field.options.groupMode === 'multiple') {
         input = input[field.slug] || []
         const subFields = _.get(field, 'options.fields') || []
-        output = []
+        // output = []
 
-        output = await Promise.map(input, async function (inputItem) {
+        const result = await Promise.map(input, async function (inputItem) {
           const itemOutput = {}
-          await Promise.map(subFields, async function (subField) {
-            const result = await resolveField(subField, inputItem, spec)
 
-            if (_.isPlainObject(result)) {
-              for (const [key, val] of Object.entries(result)) {
-                itemOutput[key] = val
-              }
-            } else {
-              itemOutput[field.slug] = result
+          await Promise.map(subFields, async function (subField) {
+            const resolved = await resolveField(subField, inputItem, spec)
+
+            if (!_.isPlainObject(resolved)) {
+              throw new Error('Resolve result must be an object!')
+            }
+
+            for (const [key, val] of Object.entries(resolved)) {
+              itemOutput[key] = val
             }
           })
 
           return itemOutput
         })
+
+        output = { [field.slug]: result }
       } else {
         const subInput = input[field.slug] || {}
         const fields = _.get(field, 'options.fields') || []
-        output = {}
+        const result = {}
 
         await Promise.map(fields, async function (subField) {
-          const result = await resolveField(subField, subInput, spec)
+          const resolved = await resolveField(subField, subInput, spec)
 
-          if (_.isPlainObject(result)) {
-            for (const [key, val] of Object.entries(result)) {
-              output[key] = val
-            }
-          } else {
-            output[field.slug] = result
+          if (!_.isPlainObject(resolved)) {
+            throw new Error('Resolve result must be an object!')
+          }
+
+          for (const [key, val] of Object.entries(resolved)) {
+            result[key] = val
           }
         })
+
+        output = { [field.slug]: result }
       }
     } else if (field.type === 'ColumnLayout') {
       const fields = _.get(field, 'options.columns').flat() || []
@@ -161,7 +168,7 @@ module.exports = async function (config) {
         output[subField.slug] = await resolveField(subField, input, spec)
       })
     } else if (field.type === 'BooleanField') {
-      output = input[field.slug] || false
+      output = { [field.slug]: input[field.slug] || false }
     } else if (field.type === 'FileField') {
       const value = {
         uploadedFilename: null,
@@ -210,9 +217,11 @@ module.exports = async function (config) {
         output = []
         const entryNumbers = input[field.slug] || []
 
-        output = await Promise.map(entryNumbers, async function (entryNumber) {
+        const result = await Promise.map(entryNumbers, async function (entryNumber) {
           return resolveEntry(entryNumber, spec)
         })
+
+        output = { [field.slug]: result }
       } else {
         let value = null
         const entryNumber = input[field.slug] || null
@@ -224,7 +233,9 @@ module.exports = async function (config) {
         output = { [field.slug]: value }
       }
     } else {
-      output = input[field.slug] || null
+      output = {
+        [field.slug]: input[field.slug] || null
+      }
     }
 
     return output
