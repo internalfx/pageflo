@@ -29,7 +29,7 @@ module.exports = {
     'sessionStorage',
     // 'settings',
     'bcrypt',
-    'mailer',
+    // 'mailer',
     'images',
     'contentResolver',
     'contentMigration',
