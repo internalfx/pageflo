@@ -117,7 +117,7 @@ export const actions = {
     })
 
     const newObj = {
-      publication_key: state.$route.params.publication_key,
+      publication_key: rootState.route.params.publication_key,
       title: null,
       slug: null,
       isWebpage: true,
