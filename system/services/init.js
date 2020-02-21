@@ -1,4 +1,4 @@
-const mkdirp = require('mkdirp-promise')
+const mkdirp = require('mkdirp')
 const path = require('path')
 
 module.exports = async function (config) {
