@@ -12,6 +12,12 @@ _.mixin({ isPresent: _.negate(_.isEmpty) })
 
 export default ({ app, env, store }, inject) => {
 
+  app.router.beforeEach((to, from, next) => {
+    store.commit('set', {
+      route: to
+    })
+    next()
+  })
 }
 
 tagNames.isValidMarkerType = function () {
