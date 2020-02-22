@@ -2,7 +2,7 @@
 <script>
 /* global FormData */
 
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
 // import { mapFields, mapMultiRowFields } from 'vuex-map-fields'
 import format from '../../../../../lib/format.js'
 import { to } from '../../../../../lib/utils.js'
@@ -10,7 +10,6 @@ import { to } from '../../../../../lib/utils.js'
 import _ from 'lodash'
 
 import fileForm from '../../../../ui/forms/fileForm.vue'
-import filePreview from '../../../../ui/filePreview.vue'
 
 export default {
   apollo: {
@@ -26,8 +25,7 @@ export default {
     }
   },
   components: {
-    fileForm,
-    filePreview
+    fileForm
   },
   computed: {
     filesWaiting: function () {
