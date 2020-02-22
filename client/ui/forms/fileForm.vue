@@ -77,7 +77,7 @@ export default {
     ...format('bytes'),
     save: async function () {
       this.inFlight = true
-      let res = await to(this.$apollo.mutate({
+      const res = await to(this.$apollo.mutate({
         mutation: gql`
           mutation ($file: FileInput!) {
             updateFile (file: $file) {
@@ -114,17 +114,17 @@ export default {
         dataTransfer = evt.dataTransfer
       }
       this.dropReady = false
-      let files = []
+      const files = []
       if (dataTransfer.items) {
-        let items = dataTransfer.items
+        const items = dataTransfer.items
         for (let i = 0; i < items.length; i += 1) {
           if (items[i].kind === 'file') {
-            let f = items[i].getAsFile()
+            const f = items[i].getAsFile()
             files.push(f)
           }
         }
       } else {
-        let items = dataTransfer.files
+        const items = dataTransfer.files
         for (let i = 0; i < items.length; i += 1) {
           files.push(items[i])
         }
@@ -134,9 +134,9 @@ export default {
         return this.showAlert({ title: 'Too many files selected.', body: 'You can only upload one file.' })
       }
 
-      let mimeType = mime.lookup(files[0].name)
+      const mimeType = mime.lookup(files[0].name)
 
-      let mimeClass = _.isString(mimeType) ? mimeType.split('/')[0] : null
+      const mimeClass = _.isString(mimeType) ? mimeType.split('/')[0] : null
 
       if (this.file.mimeClass === 'image' && mimeClass !== 'image') {
         return this.showAlert({ title: 'Wrong file type', body: 'An image file can only be replaced with another image.' })
@@ -145,7 +145,7 @@ export default {
         return this.showAlert({ title: 'Wrong file type', body: 'A video file can only be replaced with another video.' })
       }
 
-      let newFile = _.first(files)
+      const newFile = _.first(files)
 
       this.fileUpload = {
         file: newFile,
@@ -157,8 +157,8 @@ export default {
       }
 
       this.fileUpload.status = 'transferring'
-      let formData = new FormData()
-      let data = {
+      const formData = new FormData()
+      const data = {
         filename: this.file.filename,
         originalFilename: this.fileUpload.originalFilename
       }
@@ -170,7 +170,7 @@ export default {
         url: '/api/file/upload',
         data: formData,
         onUploadProgress: (evt) => {
-          let percentCompleted = Math.round((evt.loaded / evt.total) * 100)
+          const percentCompleted = Math.round((evt.loaded / evt.total) * 100)
           this.fileUpload.progress = percentCompleted
         }
       })
@@ -231,10 +231,10 @@ export default {
           </div>
         </div>
 
-        <v-text-field v-model="fileData.title" label="Title" />
-        <v-text-field v-model="fileData.caption" label="Caption" />
-        <v-text-field v-model="fileData.altText" label="Alt Text" />
-        <v-textarea v-model="fileData.description" label="Description" />
+        <v-text-field v-model="fileData.title" label="Title" outlined />
+        <v-text-field v-model="fileData.caption" label="Caption" outlined />
+        <v-text-field v-model="fileData.altText" label="Alt Text" outlined />
+        <v-textarea v-model="fileData.description" label="Description" outlined />
 
         <v-btn color="primary" :loading="inFlight" :disabled="inFlight" @click="save">
           <v-icon left>$save</v-icon> Save
@@ -270,4 +270,3 @@ export default {
 }
 
 </style>
-
