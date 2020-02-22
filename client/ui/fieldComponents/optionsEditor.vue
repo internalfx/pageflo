@@ -195,7 +195,7 @@ export default {
     <v-card-text>
       <div class="px-10 pt-10">
         <div v-if="field">
-          <v-text-field v-model="label" label="Label" outlined clearable hide-details />
+          <v-text-field v-model="label" label="Label" outlined clearable />
           <component :is="`${option}Option`" :path="fieldPath" v-for="(option, idx) of optionsList" :key="idx" />
         </div>
       </div>
