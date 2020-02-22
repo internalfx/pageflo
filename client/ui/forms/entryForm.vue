@@ -20,18 +20,6 @@ import { } from 'vuex-map-fields'
 
 export default {
   apollo: {
-    // tags: {
-    //   query: gql`
-    //     query findTags ($query: String!) {
-    //       tags: findTags (query: $query)
-    //     }
-    //   `,
-    //   variables: function () {
-    //     return {
-    //       query: ''
-    //     }
-    //   }
-    // }
   },
   data: function () {
     return {
@@ -76,7 +64,7 @@ export default {
 </script>
 
 <template>
-  <div style="position: relative;">
+  <div class="my-12 position-relative">
     <v-text-field outlined v-model="title" label="Title" />
     <div v-for="field in contentType.fields" :key="field.id">
       <component :is="`edit${field.type}`" :path="field.slug" :field="field" />
