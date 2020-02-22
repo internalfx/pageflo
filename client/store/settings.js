@@ -41,6 +41,11 @@ export const state = function () {
       pageSize: 10,
       search: '',
       fileType: null
+    },
+    users: {
+      page: 1,
+      pageSize: 10,
+      search: ''
     }
   }
 }

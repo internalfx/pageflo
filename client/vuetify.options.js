@@ -29,6 +29,8 @@ const iconsDefault = {
   picture: fasIcon('camera'),
   exchange: fasIcon('exchange-alt'),
 
+  book: fasIcon('book'),
+
   file: fasIcon('file'),
   fileAlt: fasIcon('file-alt'),
   fileArchive: fasIcon('file-archive'),

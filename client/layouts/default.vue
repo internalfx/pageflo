@@ -73,12 +73,7 @@ export default {
       await this.$auth.logout()
       this.$router.push('/login')
     },
-    get: _.get,
-    // unimpersonate: async function (obj) {
-    //   this.error = null
-    //   await this.$axios.post('/api/auth/unimpersonate')
-    //   window.location = '/'
-    // },
+    get: _.get
   }
 }
 </script>
@@ -105,6 +100,20 @@ export default {
         </v-list-item>
       </div>
       <div v-if="!publication">
+        <v-divider></v-divider>
+
+        <v-list dense nav >
+          <v-list-item link :to="`/publications`">
+            <v-list-item-icon>
+              <v-icon fixed-width>$book</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Publications</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <v-divider></v-divider>
       </div>
       <div v-if="publication">
         <v-divider></v-divider>
@@ -145,6 +154,17 @@ export default {
 
       <template v-slot:append>
         <v-list dense nav>
+          <v-list-item link :to="`/users`">
+            <v-list-item-icon>
+              <v-icon fixed-width :icon="['fas', 'user']">$generic</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Users</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider></v-divider>
+
           <v-list-item link @click="logout">
             <v-list-item-icon>
               <v-icon fixed-width :icon="['fas', 'sign-out-alt']">$generic</v-icon>

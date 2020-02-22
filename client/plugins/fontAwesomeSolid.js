@@ -7,6 +7,7 @@ import {
   faAlignLeft,
   faAlignRight,
   faBars,
+  faBook,
   faBold,
   faCalendarAlt,
   faCamera,
@@ -76,6 +77,7 @@ import {
   faTrashAlt,
   faUnderline,
   faUpload,
+  faUser,
   faVideo
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -85,6 +87,7 @@ library.add(
   faAlignLeft,
   faAlignRight,
   faBars,
+  faBook,
   faBold,
   faCalendarAlt,
   faCamera,
@@ -154,5 +157,6 @@ library.add(
   faTrashAlt,
   faUnderline,
   faUpload,
+  faUser,
   faVideo
 )
