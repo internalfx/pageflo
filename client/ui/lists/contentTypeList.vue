@@ -13,7 +13,7 @@ export default {
       inFlight: false,
       headers: [
         { text: 'Title', value: 'title', sortable: false },
-        { text: 'Webpage?', value: 'isWebpage', sortable: false, align: 'center' },
+        { text: 'Slug', value: 'slug', sortable: false },
         { text: 'Content Mode', value: 'contentMode', sortable: false },
         { text: 'Actions', value: 'actions', sortable: false, align: 'right' }
       ]
@@ -82,9 +82,8 @@ export default {
         <n-link v-if="item.entries.items.length === 0" :to="{path: '/entries/create', query: { contentType_key: item._key }}">{{item.title}}</n-link> -->
       </span>
     </template>
-    <template v-slot:item.isWebpage="{item}">
-      <v-icon v-if="item.isWebpage">$checkboxOn</v-icon>
-      <v-icon v-if="!item.isWebpage">$checkboxOff</v-icon>
+    <template v-slot:item.slug="{item}">
+      <code>{{item.slug}}</code>
     </template>
     <template v-slot:item.actions="{item}">
       <v-tooltip top>

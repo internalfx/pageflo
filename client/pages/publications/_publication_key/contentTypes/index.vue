@@ -30,6 +30,7 @@ export default {
             items {
               _key
               title
+              slug
               isWebpage
               urlTemplate
               contentMode
