@@ -1,3 +1,10 @@
+require('@babel/register')({
+  cwd: __dirname,
+  plugins: ['@babel/plugin-transform-modules-commonjs'],
+  only: [
+    './lib/*'
+  ]
+})
 
 const path = require('path')
 const appDir = path.join(__dirname)
@@ -6,13 +13,15 @@ const substruct = require('@internalfx/substruct')
 const inquirer = require('inquirer')
 const _ = require('lodash')
 
-console.log(appDir)
+const configPath = path.join(process.cwd(), 'config.js')
+const userConfig = require(configPath)
 
 substruct.configure({
   build: false,
   runCron: false,
   runDir: process.cwd(),
-  appDir
+  appDir,
+  ...userConfig
 })
 
 substruct.load().then(async function ({ koa, config }) {
