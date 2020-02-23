@@ -30,6 +30,7 @@ export default {
               _key
               publication_key
               title
+              environment
               apikey
               createdAt
               updatedAt

@@ -23,7 +23,7 @@ module.exports = async function (config) {
 
   const resolveEntry = async function (entryNumber, spec) {
     spec = { depth: 3, env: 'prod', ...spec }
-    console.log('resolveEntry =================', entryNumber, spec)
+    // console.log('resolveEntry =================', entryNumber, spec)
     spec.depth -= 1
 
     const output = {}

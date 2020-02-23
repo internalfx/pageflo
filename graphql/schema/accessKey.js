@@ -15,6 +15,7 @@ const typeDefs = gql`
     _key: ID!
     publication_key: ID!
     title: String
+    environment: String
     apikey: String
     createdAt: DateTime
     updatedAt: DateTime
@@ -34,6 +35,7 @@ const typeDefs = gql`
     _key: ID
     publication_key: ID!
     title: String
+    environment: String!
   }
 
   extend type Mutation {

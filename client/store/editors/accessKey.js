@@ -29,6 +29,7 @@ export const actions = {
     const newObj = {
       publication_key: rootState.route.params.publication_key,
       title: null,
+      environment: 'prod',
       createdAt: null,
       updatedAt: null
     }
@@ -49,6 +50,7 @@ export const actions = {
             _key
             publication_key
             title
+            environment
             apikey
             createdAt
             updatedAt
@@ -75,6 +77,7 @@ export const actions = {
             _key
             publication_key
             title
+            environment
             apikey
             createdAt
             updatedAt
@@ -82,7 +85,7 @@ export const actions = {
         }
       `,
       variables: {
-        accessKey: _.pick(state.accessKey, '_key', 'publication_key', 'title')
+        accessKey: _.pick(state.accessKey, '_key', 'publication_key', 'title', 'environment')
       },
       refetchQueries: ['allAccessKeys']
     })

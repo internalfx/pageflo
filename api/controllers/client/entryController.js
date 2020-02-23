@@ -15,7 +15,6 @@ module.exports = {
     }
 
     const contentTypeSlug = ctx.state.params.content_type || null
-    const env = ctx.state.params.env || 'prod'
     const apikey = ctx.headers.apikey || null
 
     const accessKey = await arango.qNext(aql`
@@ -28,6 +27,7 @@ module.exports = {
       return ctx.throw(403)
     }
 
+    const env = accessKey.environment
     const publicationKey = accessKey.publication_key
 
     const contentType = await arango.qNext(aql`
@@ -69,7 +69,6 @@ module.exports = {
 
     const contentTypeSlug = ctx.state.params.content_type || null
     let entryNumber = isNaN(ctx.state.params.number) ? null : parseInt(ctx.state.params.number, 10)
-    const env = ctx.state.params.env || 'prod'
     const apikey = ctx.headers.apikey || null
 
     if (entryNumber == null) {
@@ -86,6 +85,7 @@ module.exports = {
       return ctx.throw(403)
     }
 
+    const env = accessKey.environment
     const publicationKey = accessKey.publication_key
 
     const contentType = await arango.qNext(aql`

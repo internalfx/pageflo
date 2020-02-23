@@ -13,6 +13,7 @@ export default {
       inFlight: false,
       headers: [
         { text: 'Title', value: 'title', sortable: false },
+        { text: 'Environment', value: 'environment', sortable: false },
         { text: 'API Key', value: 'apikey', sortable: false },
         { text: 'Actions', value: 'actions', sortable: false, align: 'right' }
       ]
@@ -74,6 +75,10 @@ export default {
   >
     <template v-slot:item.title="{item}">
       <nuxt-link :to="`/publications/${$route.params.publication_key}/accessKeys/${item._key}/edit`">{{item.title}}</nuxt-link>
+    </template>
+    <template v-slot:item.environment="{item}">
+      <v-chip v-if="item.environment === 'prod'" label color="primary">{{item.environment}}</v-chip>
+      <v-chip v-if="item.environment === 'dev'" label>{{item.environment}}</v-chip>
     </template>
     <template v-slot:item.actions="{item}">
       <v-tooltip top>
