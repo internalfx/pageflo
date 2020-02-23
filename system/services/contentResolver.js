@@ -88,7 +88,7 @@ module.exports = async function (config) {
         const data = input[field.slug]
         console.time('renderMobileDoc')
         output = {
-          [field.slug]: renderMobileDoc(data, { ...field.options.imageSize })
+          [field.slug]: renderMobileDoc(data, { ...field.options.imageSize, baseURL: config.baseURL })
         }
         console.timeEnd('renderMobileDoc')
       } else {
