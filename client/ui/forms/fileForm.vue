@@ -67,6 +67,9 @@ export default {
     filePreview
   },
   computed: {
+    baseURL: function () {
+      return process.env.baseURL
+    }
   },
   methods: {
     ...mapActions([
@@ -206,6 +209,7 @@ export default {
           <div><strong>Filename:</strong> {{file.filename}}</div>
           <div><strong>Size:</strong> {{bytes(file.size)}}</div>
           <div><strong>Type:</strong> {{file.mimeType}}</div>
+          <div><a :href="`${baseURL}/api/client/file/download/${file.filename}`">{{baseURL}}/api/client/file/download/{{file.filename}}</a></div>
         </div>
       </v-col>
 
