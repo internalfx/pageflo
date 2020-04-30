@@ -201,6 +201,7 @@ module.exports = {
     ctx.set('Content-Type', file.mimeType)
     // ctx.set('connection', 'close')
     ctx.set('Cache-Control', 'max-age=3600')
+    ctx.set('Content-Disposition', `inline; filename="${file.uploadedFilename}"`)
 
     // IF IMAGE
     if (file.mimeClass === 'image') {

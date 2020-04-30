@@ -24,12 +24,11 @@ module.exports = {
 
     const returnOriginal = _.isEqual(imageOpts, defaultImageOpts)
 
-    const cursor = await arango.query(aql`
+    const file = await arango.qNext(aql`
       FOR file IN files
         FILTER file.filename == ${filename}
         RETURN file
     `)
-    const file = await cursor.next()
 
     if (file == null) {
       ctx.throw(404)
@@ -37,6 +36,7 @@ module.exports = {
 
     ctx.set('Content-Type', file.mimeType)
     ctx.set('Cache-Control', 'max-age=3600')
+    ctx.set('Content-Disposition', `inline; filename="${file.uploadedFilename}"`)
 
     // IF IMAGE
     if (file.mimeClass === 'image') {
