@@ -31,5 +31,3 @@ VALID_ATTRIBUTES.push('alt')
 
 VALID_MARKUP_TAGNAMES.push('small')
 VALID_MARKUP_TAGNAMES.push('div')
-
-// Supports healthy sinus activity and relief from muscle soreness.

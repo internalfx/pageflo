@@ -7,9 +7,9 @@ import gql from 'graphql-tag'
 import _ from 'lodash'
 
 import fileList from '../../../../ui/lists/fileList.vue'
-import fileGrid from '../../../../ui/grids/fileGrid.vue'
-import filePreview from '../../../../ui/filePreview.vue'
-import imageColors from '../../../../ui/imageColors.vue'
+// import fileGrid from '../../../../ui/grids/fileGrid.vue'
+// import filePreview from '../../../../ui/filePreview.vue'
+// import imageColors from '../../../../ui/imageColors.vue'
 
 export default {
   apollo: {
@@ -90,9 +90,9 @@ export default {
   },
   components: {
     fileList,
-    fileGrid,
-    filePreview,
-    imageColors
+    // fileGrid,
+    // filePreview,
+    // imageColors
   },
   computed: {
     ...mapFields('settings', {
