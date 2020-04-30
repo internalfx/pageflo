@@ -17,9 +17,9 @@ const configPath = path.join(process.cwd(), 'config.js')
 const userConfig = require(configPath)
 
 substruct.configure({
+  ...userConfig,
   runDir: process.cwd(),
-  appDir: __dirname,
-  ...userConfig
+  appDir: __dirname
 })
 
 const main = async function () {
@@ -71,7 +71,6 @@ const main = async function () {
   })
 
   await substruct.load()
-
   await substruct.start()
 
   apollo.applyMiddleware({ app: substruct.koa, path: '/api/graphql' })
