@@ -1,14 +1,14 @@
 
 module.exports = async function (config) {
-  const { Nuxt, Builder } = require('nuxt')
-  const nuxtConfig = require('../../nuxt.config.js')
+  const { Nuxt, Builder } = require(`nuxt`)
+  const nuxtConfig = require(`../../nuxt.config.js`)
 
   // Config Overrides
-  nuxtConfig.dev = (config.env !== 'production')
+  nuxtConfig.dev = (config.env !== `production`)
   nuxtConfig.axios.baseURL = config.baseURL
   nuxtConfig.apollo.clientConfigs.default.httpEndpoint = `${config.baseURL}/api/graphql`
   nuxtConfig.env.baseURL = config.baseURL
-  nuxtConfig.env.isDevelopment = (config.env === 'development')
+  nuxtConfig.env.isDevelopment = (config.env === `development`)
 
   const nuxt = new Nuxt(nuxtConfig)
 

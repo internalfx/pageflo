@@ -1,6 +1,6 @@
 
-const arangojs = require('arangojs')
-const _ = require('lodash')
+const arangojs = require(`arangojs`)
+const _ = require(`lodash`)
 
 module.exports = async function (config) {
   const arango = new arangojs.Database({
@@ -16,7 +16,7 @@ module.exports = async function (config) {
   }
 
   const numberMap = {
-    entry: 'entrySequence'
+    entry: `entrySequence`
   }
 
   const getNumber = async function (type) {
@@ -24,16 +24,16 @@ module.exports = async function (config) {
       const key = numberMap[type]
 
       if (key == null) {
-        throw new Error('invalid type for getNumber')
+        throw new Error(`invalid type for getNumber`)
       }
 
       const collections = {
-        exclusive: ['sys_settings']
+        exclusive: [`sys_settings`]
       }
 
       const action = String(function (params) {
-        const db = require('@arangodb').db
-        const aql = require('@arangodb').aql
+        const db = require(`@arangodb`).db
+        const aql = require(`@arangodb`).aql
 
         let setting = db._query(aql`
           FOR setting IN sys_settings
@@ -87,7 +87,7 @@ module.exports = async function (config) {
         cursor = await arango.query(...args)
       } catch (err) {
         if (err.errorNum !== 1200 || attempts >= 50) {
-          console.log(_.get(args, '[0].query'))
+          console.log(_.get(args, `[0].query`))
           throw err
         }
       }

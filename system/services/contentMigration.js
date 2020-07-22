@@ -1,6 +1,6 @@
-const substruct = require('@internalfx/substruct')
-const _ = require('lodash')
-const Promise = require('bluebird')
+const substruct = require(`@internalfx/substruct`)
+const _ = require(`lodash`)
+const Promise = require(`bluebird`)
 
 module.exports = async function (config) {
   const { arango, aql } = substruct.services.arango
@@ -18,13 +18,13 @@ module.exports = async function (config) {
 
       if (aField == null) {
         changes.push({
-          type: 'fieldRemoved',
+          type: `fieldRemoved`,
           before: bField,
           after: aField
         })
       } else if (aField.path !== bField.path) {
         changes.push({
-          type: 'fieldMoved',
+          type: `fieldMoved`,
           before: bField,
           after: aField
         })
@@ -42,9 +42,9 @@ module.exports = async function (config) {
 
       await Promise.map(entries, async function (entry) {
         for (const change of changes) {
-          if (change.type === 'fieldRemoved') {
+          if (change.type === `fieldRemoved`) {
             removeContent(entry, change.before.path)
-          } else if (change.type === 'fieldMoved') {
+          } else if (change.type === `fieldMoved`) {
             const oldValue = removeContent(entry, change.before.path)
             addContent(entry, oldValue, change.after.path)
           }
@@ -58,7 +58,7 @@ module.exports = async function (config) {
   }
 
   const addContent = function (obj, content, path) {
-    const pathParts = path.split('.')
+    const pathParts = path.split(`.`)
     const part = _.first(pathParts)
     const isLast = pathParts.length === 1
 
@@ -70,15 +70,15 @@ module.exports = async function (config) {
 
     if (_.isArray(childObj)) {
       childObj.forEach(function (item, idx) {
-        addContent(item, content, pathParts.slice(1).join('.'))
+        addContent(item, content, pathParts.slice(1).join(`.`))
       })
     } else if (_.isPlainObject(childObj)) {
-      addContent(childObj, content, pathParts.slice(1).join('.'))
+      addContent(childObj, content, pathParts.slice(1).join(`.`))
     }
   }
 
   const removeContent = function (obj, path) {
-    const pathParts = path.split('.')
+    const pathParts = path.split(`.`)
     const part = _.first(pathParts)
     const isLast = pathParts.length === 1
 
@@ -97,32 +97,32 @@ module.exports = async function (config) {
 
       childObj.forEach(function (item, idx) {
         if (idx === 0) {
-          value = removeContent(item, pathParts.slice(1).join('.'))
+          value = removeContent(item, pathParts.slice(1).join(`.`))
         } else {
-          removeContent(item, pathParts.slice(1).join('.'))
+          removeContent(item, pathParts.slice(1).join(`.`))
         }
       })
 
       return value
     } else if (_.isPlainObject(childObj)) {
-      return removeContent(childObj, pathParts.slice(1).join('.'))
+      return removeContent(childObj, pathParts.slice(1).join(`.`))
     }
   }
 
-  const buildList = function (fields, path = 'content') {
+  const buildList = function (fields, path = `content`) {
     const list = []
 
     for (const field of fields) {
-      if (field.type === 'ColumnLayout') {
-        const subFields = _.isArray(_.get(field, 'options.columns')) ? _.get(field, 'options.columns').flat() : []
+      if (field.type === `ColumnLayout`) {
+        const subFields = _.isArray(_.get(field, `options.columns`)) ? _.get(field, `options.columns`).flat() : []
 
         const subList = buildList(subFields, path)
 
         for (const subField of subList) {
           list.push(subField)
         }
-      } else if (field.type === 'GroupLayout') {
-        const subFields = _.get(field, 'options.fields') || []
+      } else if (field.type === `GroupLayout`) {
+        const subFields = _.get(field, `options.fields`) || []
 
         const subList = buildList(subFields, `${path}.${field.slug}`)
 

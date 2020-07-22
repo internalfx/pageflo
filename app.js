@@ -1,19 +1,19 @@
-require('@babel/register')({
+require(`@babel/register`)({
   cwd: __dirname,
-  plugins: ['@babel/plugin-transform-modules-commonjs'],
+  plugins: [`@babel/plugin-transform-modules-commonjs`],
   only: [
-    './lib/*'
+    `./lib/*`
   ]
 })
 
-require('./lib/cycle.js')
-const substruct = require('@internalfx/substruct')
-const { ApolloServer, AuthenticationError, UserInputError } = require('apollo-server-koa')
-const { typeDefs, resolvers } = require('./graphql/index.js')
-const path = require('path')
-const numeral = require('numeral')
+require(`./lib/cycle.js`)
+const substruct = require(`@internalfx/substruct`)
+const { ApolloServer, AuthenticationError, UserInputError } = require(`apollo-server-koa`)
+const { typeDefs, resolvers } = require(`./graphql/index.js`)
+const path = require(`path`)
+const numeral = require(`numeral`)
 
-const configPath = path.join(process.cwd(), 'config.js')
+const configPath = path.join(process.cwd(), `config.js`)
 const userConfig = require(configPath)
 
 substruct.configure({
@@ -28,9 +28,9 @@ const main = async function () {
     resolvers,
     formatError: function (error) {
       const data = JSON.decycle(error)
-      console.log('================================================================== GRAPHQL ERROR')
+      console.log(`================================================================== GRAPHQL ERROR`)
       console.dir(data, { colors: true, depth: null })
-      console.log('================================================================================')
+      console.log(`================================================================================`)
       return data
     },
     context: async function ({ ctx }) {
@@ -47,7 +47,7 @@ const main = async function () {
       `)
 
       if (user == null) {
-        throw new AuthenticationError('You are not logged in')
+        throw new AuthenticationError(`You are not logged in`)
       }
 
       const userInputError = function (message, data) {
@@ -73,17 +73,17 @@ const main = async function () {
   await substruct.load()
   await substruct.start()
 
-  apollo.applyMiddleware({ app: substruct.koa, path: '/api/graphql' })
-  console.log('Server Started...')
-  setInterval(function () {
-    const stats = {
-      rss: numeral(process.memoryUsage().rss).format('0.00b'),
-      heapTotal: numeral(process.memoryUsage().heapTotal).format('0.00b'),
-      heapUsed: numeral(process.memoryUsage().heapUsed).format('0.00b'),
-      external: numeral(process.memoryUsage().external).format('0.00b')
-    }
-    console.log(stats)
-  }, 600000)
+  apollo.applyMiddleware({ app: substruct.koa, path: `/api/graphql` })
+  console.log(`Server Started...`)
+  // setInterval(function () {
+  //   const stats = {
+  //     rss: numeral(process.memoryUsage().rss).format('0.00b'),
+  //     heapTotal: numeral(process.memoryUsage().heapTotal).format('0.00b'),
+  //     heapUsed: numeral(process.memoryUsage().heapUsed).format('0.00b'),
+  //     external: numeral(process.memoryUsage().external).format('0.00b')
+  //   }
+  //   console.log(stats)
+  // }, 600000)
 }
 
 main().catch(function (err) {

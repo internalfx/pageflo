@@ -1,5 +1,5 @@
 
-const substruct = require('@internalfx/substruct')
+const substruct = require(`@internalfx/substruct`)
 
 module.exports = async function (config) {
   const { arango, aql } = substruct.services.arango
@@ -12,7 +12,7 @@ module.exports = async function (config) {
     let val = null
 
     if (record) {
-      if (record.type === 'DateTime') {
+      if (record.type === `DateTime`) {
         val = new Date(record.value)
       } else {
         val = record.value
@@ -29,7 +29,7 @@ module.exports = async function (config) {
     }
 
     if (value instanceof Date) {
-      obj.type = 'DateTime'
+      obj.type = `DateTime`
     }
 
     await arango.q(aql`

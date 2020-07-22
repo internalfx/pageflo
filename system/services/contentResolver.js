@@ -1,11 +1,11 @@
-const substruct = require('@internalfx/substruct')
-const getCards = require('../../lib/mobileDocCards').default
-const _ = require('lodash')
-const Promise = require('bluebird')
+const substruct = require(`@internalfx/substruct`)
+const getCards = require(`../../lib/mobileDocCards`).default
+const _ = require(`lodash`)
+const Promise = require(`bluebird`)
 
-const MobiledocDOMRenderer = require('mobiledoc-dom-renderer').default
-const SimpleDOM = require('simple-dom')
-const { JSDOM } = require('jsdom')
+const MobiledocDOMRenderer = require(`mobiledoc-dom-renderer`).default
+const SimpleDOM = require(`simple-dom`)
+const { JSDOM } = require(`jsdom`)
 
 module.exports = async function (config) {
   const { arango, aql } = substruct.services.arango
@@ -22,7 +22,7 @@ module.exports = async function (config) {
   }
 
   const resolveEntry = async function (entryNumber, spec) {
-    spec = { depth: 3, env: 'prod', ...spec }
+    spec = { depth: 3, env: `prod`, ...spec }
     // console.log('resolveEntry =================', entryNumber, spec)
     spec.depth -= 1
 
@@ -34,7 +34,7 @@ module.exports = async function (config) {
 
     let entry = null
 
-    if (spec.env === 'dev') {
+    if (spec.env === `dev`) {
       entry = await arango.qNext(aql`
         FOR entry IN entries
           FILTER entry.number == ${entryNumber}
@@ -65,7 +65,7 @@ module.exports = async function (config) {
       const result = await resolveField(field, entry.content, spec)
 
       if (!_.isPlainObject(result)) {
-        throw new Error('Resolve result must be an object!')
+        throw new Error(`Resolve result must be an object!`)
       }
 
       for (const [key, val] of Object.entries(result)) {
@@ -80,22 +80,22 @@ module.exports = async function (config) {
     let output = null
 
     if (!Number.isFinite(spec.depth)) {
-      throw new Error('Depth is required')
+      throw new Error(`Depth is required`)
     }
 
-    if (field.type === 'RichTextEditor') {
+    if (field.type === `RichTextEditor`) {
       if (_.isPlainObject(input[field.slug])) {
         const data = input[field.slug]
-        console.time('renderMobileDoc')
+        console.time(`renderMobileDoc`)
         output = {
           [field.slug]: renderMobileDoc(data, { ...field.options.imageSize, baseURL: config.baseURL })
         }
-        console.timeEnd('renderMobileDoc')
+        console.timeEnd(`renderMobileDoc`)
       } else {
         output = { [field.slug]: null }
       }
-    } else if (field.type === 'SelectField') {
-      if (field.options.selectMode === 'multiple') {
+    } else if (field.type === `SelectField`) {
+      if (field.options.selectMode === `multiple`) {
         const val = input[field.slug]
 
         if (_.isArray(val)) {
@@ -116,10 +116,10 @@ module.exports = async function (config) {
           output = { [field.slug]: null }
         }
       }
-    } else if (field.type === 'GroupLayout') {
-      if (field.options.groupMode === 'multiple') {
+    } else if (field.type === `GroupLayout`) {
+      if (field.options.groupMode === `multiple`) {
         input = input[field.slug] || []
-        const subFields = _.get(field, 'options.fields') || []
+        const subFields = _.get(field, `options.fields`) || []
         // output = []
 
         const result = await Promise.map(input, async function (inputItem) {
@@ -129,7 +129,7 @@ module.exports = async function (config) {
             const resolved = await resolveField(subField, inputItem, spec)
 
             if (!_.isPlainObject(resolved)) {
-              throw new Error('Resolve result must be an object!')
+              throw new Error(`Resolve result must be an object!`)
             }
 
             for (const [key, val] of Object.entries(resolved)) {
@@ -143,14 +143,14 @@ module.exports = async function (config) {
         output = { [field.slug]: result }
       } else {
         const subInput = input[field.slug] || {}
-        const fields = _.get(field, 'options.fields') || []
+        const fields = _.get(field, `options.fields`) || []
         const result = {}
 
         await Promise.map(fields, async function (subField) {
           const resolved = await resolveField(subField, subInput, spec)
 
           if (!_.isPlainObject(resolved)) {
-            throw new Error('Resolve result must be an object!')
+            throw new Error(`Resolve result must be an object!`)
           }
 
           for (const [key, val] of Object.entries(resolved)) {
@@ -160,16 +160,16 @@ module.exports = async function (config) {
 
         output = { [field.slug]: result }
       }
-    } else if (field.type === 'ColumnLayout') {
-      const fields = _.get(field, 'options.columns').flat() || []
+    } else if (field.type === `ColumnLayout`) {
+      const fields = _.get(field, `options.columns`).flat() || []
       output = {}
 
       await Promise.map(fields, async function (subField) {
         output[subField.slug] = await resolveField(subField, input, spec)
       })
-    } else if (field.type === 'BooleanField') {
+    } else if (field.type === `BooleanField`) {
       output = { [field.slug]: input[field.slug] || false }
-    } else if (field.type === 'FileField') {
+    } else if (field.type === `FileField`) {
       const value = {
         uploadedFilename: null,
         ext: null,
@@ -197,23 +197,23 @@ module.exports = async function (config) {
       output = {
         [field.slug]: value
       }
-    } else if (field.type === 'LinkField') {
+    } else if (field.type === `LinkField`) {
       const value = {
         caption: null,
         url: null,
         className: null,
         newWindow: false,
-        ..._.pick(input[field.slug], 'caption', 'url', 'className', 'newWindow')
+        ..._.pick(input[field.slug], `caption`, `url`, `className`, `newWindow`)
       }
 
       output = {
         [field.slug]: value
       }
-    } else if (field.type === 'ReferenceField') {
-      console.log('ReferenceField', input[field.slug])
+    } else if (field.type === `ReferenceField`) {
+      console.log(`ReferenceField`, input[field.slug])
       if (spec.depth <= 0) {
         output = { [field.slug]: `$ref:${field.slug}` }
-      } else if (field.options.selectMode === 'multiple') {
+      } else if (field.options.selectMode === `multiple`) {
         output = []
         const entryNumbers = input[field.slug] || []
 

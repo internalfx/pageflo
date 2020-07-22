@@ -1,5 +1,5 @@
-const substruct = require('@internalfx/substruct')
-const _ = require('lodash')
+const substruct = require(`@internalfx/substruct`)
+const _ = require(`lodash`)
 // const lruCache = require('lru-cache')
 
 module.exports = async function (config) {
@@ -46,7 +46,7 @@ module.exports = async function (config) {
     }
 
     await arango.query(aql`
-      UPSERT ${_.pick(obj, '_key')} INSERT ${obj} REPLACE ${_.omit(obj, '_key')} IN sys_sessions
+      UPSERT ${_.pick(obj, `_key`)} INSERT ${obj} REPLACE ${_.omit(obj, `_key`)} IN sys_sessions
     `)
   }
 }

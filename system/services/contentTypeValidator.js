@@ -1,5 +1,5 @@
 // const substruct = require('@internalfx/substruct')
-const _ = require('lodash')
+const _ = require(`lodash`)
 // const Promise = require('bluebird')
 
 module.exports = async function (config) {
@@ -12,7 +12,7 @@ module.exports = async function (config) {
     }
 
     template.fields.forEach(function (field) {
-      getConflictsField(field, output, 'fields')
+      getConflictsField(field, output, `fields`)
     })
 
     output.fieldIds = _.uniq(output.fieldIds)
@@ -30,15 +30,15 @@ module.exports = async function (config) {
   }
 
   const getConflictsField = function (field, output, path) {
-    if (field.type === 'ColumnLayout') {
-      const fields = _.isArray(_.get(field, 'options.columns')) ? _.get(field, 'options.columns').flat() : []
+    if (field.type === `ColumnLayout`) {
+      const fields = _.isArray(_.get(field, `options.columns`)) ? _.get(field, `options.columns`).flat() : []
 
       fields.forEach(function (subField) {
         getConflictsField(subField, output, path)
       })
-    } else if (field.type === 'GroupLayout') {
+    } else if (field.type === `GroupLayout`) {
       addField(field, output, `${path}.${field.slug}`)
-      const fields = _.get(field, 'options.fields') || []
+      const fields = _.get(field, `options.fields`) || []
 
       fields.forEach(function (subField) {
         getConflictsField(subField, output, `${path}.${field.slug}`)

@@ -1,6 +1,6 @@
-const ArangoFS = require('@internalfx/arangofs')
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'))
+const ArangoFS = require(`@internalfx/arangofs`)
+const Promise = require(`bluebird`)
+const fs = Promise.promisifyAll(require(`fs`))
 
 module.exports = async function (config) {
   const storagePath = config.arangoFS.path

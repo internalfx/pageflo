@@ -1,10 +1,10 @@
 'use strict'
 
-const crypto = require('crypto')
-const path = require('path')
+const crypto = require(`crypto`)
+const path = require(`path`)
 
 module.exports = function (config) {
-  config.scriptsDir = path.join(config.appDir, 'assets', 'scripts')
+  config.scriptsDir = path.join(config.appDir, `assets`, `scripts`)
 
   const to = function (promise) {
     return promise.then(function (val) {
@@ -16,8 +16,8 @@ module.exports = function (config) {
   }
 
   const uniqueId = function (length) {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    const numbers = '1234567890'
+    const letters = `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
+    const numbers = `1234567890`
     const bytes = Array.from(crypto.randomBytes(length))
 
     const value = bytes.map(function (byte, idx) {
@@ -28,7 +28,7 @@ module.exports = function (config) {
       }
     })
 
-    return value.join('')
+    return value.join(``)
   }
 
   return Object.freeze({

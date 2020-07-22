@@ -1,12 +1,12 @@
 
-const substruct = require('@internalfx/substruct')
-const Promise = require('bluebird')
-const crypto = require('crypto')
-const path = require('path')
-const { exec } = require('promisify-child-process')
-const fs = Promise.promisifyAll(require('fs'))
-const lockFile = Promise.promisifyAll(require('lockfile'))
-const streamPromise = require('stream-to-promise')
+const substruct = require(`@internalfx/substruct`)
+const Promise = require(`bluebird`)
+const crypto = require(`crypto`)
+const path = require(`path`)
+const { exec } = require(`promisify-child-process`)
+const fs = Promise.promisifyAll(require(`fs`))
+const lockFile = Promise.promisifyAll(require(`lockfile`))
+const streamPromise = require(`stream-to-promise`)
 
 module.exports = async function (config) {
   const arangofs = substruct.services.arangofs
@@ -20,7 +20,7 @@ module.exports = async function (config) {
   //   format
   // }
 
-  await fs.mkdirAsync(path.join(config.appDir, 'cache', 'temp'), { recursive: true })
+  await fs.mkdirAsync(path.join(config.appDir, `cache`, `temp`), { recursive: true })
 
   const fileExists = async function (filePath) {
     let exists = true
@@ -40,11 +40,11 @@ module.exports = async function (config) {
     // let gridFile = await arangofs.getFile({ filename: file.filename })
 
     const cacheKey = `${file.sha256}:${width}:${height}:${sizing}:${background}:${format}:${enlarge}.${ext}`
-    const cacheHash = crypto.createHash('sha256').update(cacheKey).digest('hex')
+    const cacheHash = crypto.createHash(`sha256`).update(cacheKey).digest(`hex`)
 
-    const tempPath = path.join(config.appDir, 'cache', 'temp', `${cacheHash}.${ext}`)
-    const lockPath = path.join(config.appDir, 'cache', 'temp', `${cacheHash}.lock`)
-    const cachePath = path.join(config.appDir, 'cache', `${cacheHash}.${ext}`)
+    const tempPath = path.join(config.appDir, `cache`, `temp`, `${cacheHash}.${ext}`)
+    const lockPath = path.join(config.appDir, `cache`, `temp`, `${cacheHash}.lock`)
+    const cachePath = path.join(config.appDir, `cache`, `${cacheHash}.${ext}`)
 
     if (await fileExists(cachePath)) {
       return fs.createReadStream(cachePath)
