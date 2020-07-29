@@ -1,27 +1,27 @@
-const Promise = require('bluebird')
-const { createId } = require('../../../lib/utils.js')
-const palette = require('../../../lib/colorPalette.js')
-const substruct = require('@internalfx/substruct')
+const Promise = require(`bluebird`)
+const { createId } = require(`../../../lib/utils.js`)
+const palette = require(`../../../lib/colorPalette.js`)
+const substruct = require(`@internalfx/substruct`)
 
 const config = substruct.config
 const { arango, aql } = substruct.services.arango
 const arangofs = substruct.services.arangofs
 const images = substruct.services.images
 
-const _ = require('lodash')
-const multiparty = require('multiparty')
-const streamPromise = require('stream-to-promise')
-const { Transform } = require('stream')
-const mime = require('mime-types')
-const chroma = require('chroma-js')
-const path = require('path')
-const fs = Promise.promisifyAll(require('fs'))
-const { exec } = require('promisify-child-process')
+const _ = require(`lodash`)
+const multiparty = require(`multiparty`)
+const streamPromise = require(`stream-to-promise`)
+const { Transform } = require(`stream`)
+const mime = require(`mime-types`)
+const chroma = require(`chroma-js`)
+const path = require(`path`)
+const fs = Promise.promisifyAll(require(`fs`))
+const { exec } = require(`promisify-child-process`)
 
 const defaultImageOpts = {
   width: null,
   height: null,
-  sizing: 'cover',
+  sizing: `cover`,
   background: null,
   format: null,
   enlarge: true
@@ -34,7 +34,7 @@ const createPassthru = function () {
     callback(null, chunk)
   }
 
-  passthru.on('error', function (err) {
+  passthru.on(`error`, function (err) {
     console.log(err)
   })
 
@@ -52,24 +52,24 @@ module.exports = {
       isComplete.reject = reject
     })
 
-    form.on('error', function (err) {
-      console.log('Error parsing form: ' + err.stack)
+    form.on(`error`, function (err) {
+      console.log(`Error parsing form: ` + err.stack)
     })
 
-    form.on('part', function (part) {
+    form.on(`part`, function (part) {
       if (!part.filename) {
         streamPromise(part)
           .then(async function (data) {
             data = JSON.parse(data.toString())
 
             if (data.originalFilename == null) {
-              throw new Error('originalFilename is required')
+              throw new Error(`originalFilename is required`)
             }
 
-            let ext = _.last(data.originalFilename.split('.')).toLowerCase()
+            let ext = _.last(data.originalFilename.split(`.`)).toLowerCase()
 
-            if (ext === 'jpeg') {
-              ext = 'jpg'
+            if (ext === `jpeg`) {
+              ext = `jpg`
             }
 
             let filename = data.filename
@@ -103,15 +103,15 @@ module.exports = {
             file.ext = ext
             file.uploadedFilename = data.originalFilename
             file.mimeType = mime.lookup(ext)
-            file.mimeClass = _.isString(file.mimeType) ? file.mimeType.split('/')[0] : null
+            file.mimeClass = _.isString(file.mimeType) ? file.mimeType.split(`/`)[0] : null
             file.size = gridFile.size
             file.sha256 = gridFile.sha256
             file.updatedAt = new Date()
 
-            if (['image/gif', 'image/jpeg', 'image/png'].includes(file.mimeType)) {
+            if ([`image/gif`, `image/jpeg`, `image/png`].includes(file.mimeType)) {
               gridFile = await arangofs.readFile({ filename: filename })
 
-              const tempPath = path.join(config.appDir, 'cache', createId())
+              const tempPath = path.join(config.appDir, `cache`, createId())
               await fs.writeFileAsync(tempPath, gridFile.buffer)
 
               const res = await exec(`${config.nodePath} scripts/imageData.js '${JSON.stringify({ input: tempPath })}'`)
@@ -168,7 +168,7 @@ module.exports = {
         part.pipe(passthru)
       }
 
-      part.on('error', function (err) {
+      part.on(`error`, function (err) {
         console.log(err)
       })
     })
@@ -183,7 +183,7 @@ module.exports = {
   download: async function (ctx) {
     const { filename } = ctx.state.params
     let imageOpts = { ...defaultImageOpts, ...ctx.state.params }
-    imageOpts = _.pick(imageOpts, ['width', 'height', 'sizing', 'background', 'format', 'enlarge'])
+    imageOpts = _.pick(imageOpts, [`width`, `height`, `sizing`, `background`, `format`, `enlarge`])
 
     const returnOriginal = _.isEqual(imageOpts, defaultImageOpts)
 
@@ -198,13 +198,13 @@ module.exports = {
       ctx.throw(404)
     }
 
-    ctx.set('Content-Type', file.mimeType)
+    ctx.set(`Content-Type`, file.mimeType)
     // ctx.set('connection', 'close')
-    ctx.set('Cache-Control', 'max-age=3600')
-    ctx.set('Content-Disposition', `inline; filename="${file.uploadedFilename}"`)
+    ctx.set(`Cache-Control`, `max-age=3600`)
+    ctx.set(`Content-Disposition`, `inline; filename="${file.uploadedFilename}"`)
 
     // IF IMAGE
-    if (file.mimeClass === 'image') {
+    if (file.mimeClass === `image`) {
       if (returnOriginal) {
         const gridFile = await arangofs.getFile({ filename: file.filename })
         ctx.body = await arangofs.createReadStream({ _id: gridFile._id })
@@ -214,14 +214,14 @@ module.exports = {
 
         if (imageOpts.format != null) {
           const newMime = mime.lookup(imageOpts.format)
-          ctx.set('Content-Type', newMime)
+          ctx.set(`Content-Type`, newMime)
         }
 
         ctx.body = await images.process({ ...imageOpts, file })
       }
     // IF VIDEO
-    } else if (['audio', 'video'].includes(file.mimeClass)) {
-      ctx.set('Accept-Ranges', 'bytes')
+    } else if ([`audio`, `video`].includes(file.mimeClass)) {
+      ctx.set(`Accept-Ranges`, `bytes`)
 
       const gridFile = await arangofs.getFile({ filename: filename })
       const range = ctx.header.range
@@ -232,7 +232,7 @@ module.exports = {
       let end = null
 
       if (range) {
-        const parts = range.replace(/bytes=/, '').split('-')
+        const parts = range.replace(/bytes=/, ``).split(`-`)
         const partialstart = parts[0]
         const partialend = parts[1]
 
@@ -244,10 +244,10 @@ module.exports = {
         contentLength = (end - start) + 1
 
         ctx.status = 206
-        ctx.set('Content-Range', `bytes ${start}-${end}/${size}`)
+        ctx.set(`Content-Range`, `bytes ${start}-${end}/${size}`)
       }
 
-      ctx.set('Content-Length', contentLength)
+      ctx.set(`Content-Length`, contentLength)
 
       ctx.body = await arangofs.createReadStream({ _id: gridFile._id, seekStart: start, seekEnd: end })
     } else {
