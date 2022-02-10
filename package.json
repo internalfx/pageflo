@@ -51,7 +51,7 @@
     "mobiledoc-kit": "^0.12.4",
     "moment": "^2.26.0",
     "multiparty": "^4.2.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "node-vibrant": "^3.2.0-alpha",
     "numeral": "^2.0.6",
     "nuxt": "2.12.2",
