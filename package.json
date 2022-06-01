@@ -62,7 +62,7 @@
     "request-promise": "^4.2.5",
     "require-all": "^3.0.0",
     "sanitize-html": "^1.26.0",
-    "sharp": "^0.25.4",
+    "sharp": "^0.30.5",
     "simple-dom": "^1.4.0",
     "sortablejs": "^1.10.2",
     "stream-to-promise": "^2.2.0",
